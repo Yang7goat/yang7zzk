@@ -773,27 +773,6 @@ h2 em {
   cursor: wait;
 }
 
-.account-switch {
-  margin: 18px 0 0;
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.account-switch .text-link {
-  margin-left: 4px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--accent);
-  cursor: pointer;
-  font-size: inherit;
-}
-
-.account-switch .text-link:hover,
-.account-switch .text-link:focus-visible {
-  text-decoration: underline;
-}
-
 .project-form {
   margin-top: 25px;
   padding: 20px;

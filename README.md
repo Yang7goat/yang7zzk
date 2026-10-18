@@ -21,16 +21,16 @@ Os atalhos de contato e redes sociais sem endereço ficam ocultos.
 
 O site estático não guarda os projetos apenas no navegador: ele usa o plano gratuito do Supabase para que os projetos publicados apareçam para todos os visitantes. A chave `anon` do Supabase é pública por definição; as políticas de segurança do banco, e não um segredo no JavaScript, impedem que visitantes alterem os projetos.
 
-1. No projeto Supabase já configurado em `config.js`, mantenha habilitado **Authentication → Settings → User Signups** para que visitantes possam criar contas opcionais. O portfólio continua público e não exige login para visualização. Contas comuns não recebem acesso de gerenciamento.
+1. No Supabase, desabilite **Authentication → Settings → User Signups** para impedir novos cadastros. O portfólio continua público e não exige login para visualização; apenas a conta proprietária existente usa a área de gerenciamento.
 2. Em **Authentication → Users**, confirme que o usuário proprietário tem o e-mail definido em `OWNER_EMAIL` e que o UID dele corresponde a `OWNER_USER_ID` em `config.js`. Use uma senha forte e exclusiva; não reutilize credenciais que já tenham sido compartilhadas.
 3. Abra o **SQL Editor** e execute `supabase/schema.sql`. Esse passo cria a tabela `public.projects` e suas políticas RLS. Elas exigem tanto o UID proprietário quanto o e-mail `OWNER_EMAIL` para inserir, editar ou excluir; outras contas continuam sem permissão.
 4. Se o login exigir confirmação de e-mail, adicione os endereços do site em **Authentication → URL Configuration → Redirect URLs**.
 5. Abra `index.html` por um servidor local para testar. Como os arquivos usam módulos JavaScript, não teste clicando duas vezes no HTML. Por exemplo, se tiver Python instalado, rode `py -m http.server 8000` nesta pasta e acesse `http://localhost:8000`.
 6. Clique em **Área do proprietário**, entre com a conta proprietária e gerencie seus projetos. O e-mail sozinho não concede permissões: a autorização é baseada no UID da conta e nas políticas RLS do Supabase.
 
-Para o cadastro opcional funcionar, mantenha os cadastros de usuários habilitados no Supabase Auth. O site não exige login para visualizar projetos e não oferece a contas comuns qualquer permissão de publicação.
+O site não oferece criação de contas. Desabilite os cadastros no Supabase Auth também para impedir que alguém crie usuários diretamente pela API. Visitantes continuam vendo o portfólio sem fazer login.
 
-O campo de imagem aceita um link público de imagem iniciado por `https://`; o campo de link do projeto também é opcional. A chave publicável e o User UID não são senhas. Com cadastros públicos habilitados, é essencial manter as políticas RLS do `schema.sql` aplicadas: apenas o UID proprietário com o e-mail permitido pode alterar projetos.
+O campo de imagem aceita um link público de imagem iniciado por `https://`; o campo de link do projeto também é opcional. A chave publicável e o User UID não são senhas. As políticas RLS do `schema.sql` permitem alterações apenas ao UID proprietário com o e-mail permitido.
 
 ## Publicar grátis, sem comprar domínio
 

@@ -10,7 +10,6 @@ const grid = document.querySelector("#projects-grid");
 const dialog = document.querySelector("#admin-dialog");
 const adminMessage = document.querySelector("#admin-message");
 const loginForm = document.querySelector("#login-form");
-const signupForm = document.querySelector("#signup-form");
 const projectManager = document.querySelector("#project-manager");
 const projectForm = document.querySelector("#project-form");
 const managedProjects = document.querySelector("#managed-projects");
@@ -51,7 +50,6 @@ function renderProfile() {
   document.querySelector("#about-name").textContent = name.toLocaleUpperCase("pt-BR");
   document.querySelector("#about-description").textContent = PROFILE.description;
   document.querySelector("#current-year").textContent = new Date().getFullYear();
-  loginForm.elements.email.value = OWNER_EMAIL;
 
   const contactLinks = [
     ["#contact-whatsapp", safeExternalUrl(PROFILE.whatsapp.trim())],
@@ -265,63 +263,17 @@ document.querySelector("#admin-trigger").addEventListener("click", () => {
 });
 
 document.querySelector("#close-admin").addEventListener("click", () => dialog.close());
+dialog.addEventListener("close", () => {
+  if (session?.user.id !== OWNER_USER_ID) {
+    loginForm.reset();
+    loginForm.hidden = false;
+  }
+});
 dialog.addEventListener("click", (event) => {
   if (event.target === dialog) dialog.close();
 });
 
 document.querySelector("#cancel-edit").addEventListener("click", resetProjectForm);
-
-document.querySelector("#show-signup").addEventListener("click", () => {
-  loginForm.hidden = true;
-  signupForm.hidden = false;
-  setMessage("");
-});
-
-document.querySelector("#show-login").addEventListener("click", () => {
-  signupForm.hidden = true;
-  loginForm.hidden = false;
-  setMessage("");
-});
-
-signupForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!isConfigured()) {
-    setMessage("A criação de contas ainda não está conectada ao Supabase. Consulte o README.md.", true);
-    return;
-  }
-  const email = signupForm.elements.email.value.trim();
-  const password = signupForm.elements.password.value;
-  if (email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
-    setMessage("Use a conta proprietária apenas para entrar; não crie uma nova conta com esse e-mail.", true);
-    return;
-  }
-  if (password.length < 12) {
-    setMessage("Escolha uma senha com pelo menos 12 caracteres.", true);
-    return;
-  }
-  if (password !== signupForm.elements["password-confirm"].value) {
-    setMessage("As senhas não conferem.", true);
-    return;
-  }
-
-  const submitButton = signupForm.querySelector('button[type="submit"]');
-  submitButton.disabled = true;
-  setMessage("");
-  try {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: window.location.origin },
-    });
-    if (error) throw error;
-    signupForm.reset();
-    setMessage("Cadastro enviado. Confira seu e-mail para confirmar a conta, se a confirmação estiver habilitada.");
-  } catch (error) {
-    setMessage(`Não foi possível criar a conta: ${error.message}`, true);
-  } finally {
-    submitButton.disabled = false;
-  }
-});
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -352,6 +304,7 @@ loginForm.addEventListener("submit", async (event) => {
     }
     session = data.session;
     setLoggedIn(true);
+    loginForm.reset();
   } catch (error) {
     setMessage(`Não foi possível entrar: ${error.message}`, true);
     return;
@@ -413,6 +366,7 @@ document.querySelector("#logout-button").addEventListener("click", async () => {
     if (error) throw error;
     session = null;
     setLoggedIn(false);
+    loginForm.reset();
     setMessage("Você saiu da sua conta.");
   } catch (error) {
     setMessage(`Não foi possível encerrar a sessão: ${error.message}`, true);

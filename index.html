@@ -149,30 +149,12 @@
       </div>
       <p class="admin-message" id="admin-message" role="status"></p>
       <form class="login-form" id="login-form">
-        <p class="admin-intro">A navegação do portfólio é pública. Entre com a conta proprietária para gerenciar projetos.</p>
+        <p class="admin-intro">O portfólio é público. Esta área é exclusiva da conta proprietária.</p>
         <label for="login-email">E-mail</label>
         <input id="login-email" name="email" type="email" autocomplete="username" required />
         <label for="login-password">Senha</label>
         <input id="login-password" name="password" type="password" autocomplete="current-password" required />
         <button class="button button-light admin-submit" type="submit">Entrar</button>
-        <p class="account-switch">
-          Ainda não tem conta?
-          <button class="text-link" id="show-signup" type="button">Criar conta</button>
-        </p>
-      </form>
-      <form class="signup-form" id="signup-form" hidden>
-        <p class="admin-intro">A conta é opcional: qualquer pessoa pode ver o portfólio sem entrar. Contas comuns não podem publicar nem alterar projetos.</p>
-        <label for="signup-email">Seu e-mail</label>
-        <input id="signup-email" name="email" type="email" autocomplete="email" required />
-        <label for="signup-password">Crie uma senha</label>
-        <input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="12" required />
-        <label for="signup-password-confirm">Confirme a senha</label>
-        <input id="signup-password-confirm" name="password-confirm" type="password" autocomplete="new-password" minlength="12" required />
-        <button class="button button-light admin-submit" type="submit">Criar conta</button>
-        <p class="account-switch">
-          Já tem conta?
-          <button class="text-link" id="show-login" type="button">Entrar</button>
-        </p>
       </form>
       <div class="project-manager" id="project-manager" hidden>
         <div class="manager-toolbar">
